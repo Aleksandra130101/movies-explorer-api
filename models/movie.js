@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-
+const mongoose = require('mongoose');
+const validator = require('validator');
 
 const movieSchema = new mongoose.Schema({
   country: { // страна создания фильма
@@ -47,14 +46,14 @@ const movieSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  nameRu: { // �������� ������ �� ������� �����
+  nameRU: { // название фильма на русском
     type: String,
     required: true,
   },
-  nameEn: { // название фильма на английском языке
+  nameEN: { // название фильма на английском языке
     type: String,
     required: true,
-  }
-})
+  },
+});
 
 module.exports = mongoose.model('movie', movieSchema);
