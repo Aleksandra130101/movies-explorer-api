@@ -8,6 +8,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const NotFoundError = require('../errors/not-found-err');
 const ConflictError = require('../errors/conflictError');
 const SomethingWrongRequest = require('../errors/somethingWrongRequest');
+const { USER_NOT_UNIQUE, INCORRENT_DATE, NOT_FOUND } = require('../utils/constants');
 
 // Get возвращает информацию о пользователе (email и имя)
 module.exports.getMe = (req, res, next) => {
@@ -26,14 +27,14 @@ module.exports.updateUser = (req, res, next) => {
       if (user) {
         res.send({ email, name });
       } else {
-        next(new NotFoundError('Пользователь по id не найден!!!'));
+        next(new NotFoundError(NOT_FOUND));
       }
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь с таким Email уже существует'));
+        next(new ConflictError(USER_NOT_UNIQUE));
       } else if (err.name === 'ValidationError') {
-        next(new SomethingWrongRequest('При обновлении информации о пользователе переданы некорректные данные'));
+        next(new SomethingWrongRequest(INCORRENT_DATE));
       } else {
         next(err);
       }
@@ -57,9 +58,9 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь с таким Email уже существует'));
+        next(new ConflictError(USER_NOT_UNIQUE));
       } else if (err.name === 'ValidationError') {
-        next(new SomethingWrongRequest('При создании пользователя переданы некорректные данные'));
+        next(new SomethingWrongRequest(INCORRENT_DATE));
       } else {
         next(err);
       }
